@@ -62,4 +62,23 @@ def view_log():
         for line in file:
             if f"| {username} |" in line:
                 print(line.strip())
-                
+
+
+def generate_summary():
+    count = 0 
+
+
+def menu():
+    print("\n1. Register User")
+    print("2. Log Activity")
+    print("3. View User Logs")
+    print("4. Generate Summary")
+    print("5. Exit")
+
+
+def main():
+    while True:
+        choice = input("Enter your choice: ")
+
+        if choice ==1:
+
