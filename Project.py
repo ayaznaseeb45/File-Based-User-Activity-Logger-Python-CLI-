@@ -37,35 +37,49 @@ def register_user():
 
     print("User registered successfully")
 
+
 def log_activity():
-    username = input("enter your username: ").strip()
+    username = input("Enter username: ").strip()
     users = load_users()
-    if not os.path.exists(users):
-        print("user not registered")
+
+    if username not in users:
+        print("User not registered")
         return
-    activity = input("enter yur activity: ").strip()
+
+    activity = input("Enter activity: ").strip()
     time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    with open (LOG_FILE, "a") as file:
-        file.write(f"{time} | {username} |{activity} \n")
-    print("activity log")
+    with open(LOG_FILE, "a") as file:
+        file.write(f"{time} | {username} | {activity}\n")
+
+    print("Activity logged")
 
 
-def view_log():
-    username = input("enter username to view log: ").strip()
+def view_logs():
+    username = input("Enter username to view logs: ").strip()
 
     if not os.path.exists(LOG_FILE):
-        print("No log found")
+        print("No logs found")
         return
-    
-    with open (LOG_FILE, "r") as file:
+
+    with open(LOG_FILE, "r") as file:
         for line in file:
             if f"| {username} |" in line:
                 print(line.strip())
 
 
 def generate_summary():
-    count = 0 
+    count = 0
+
+    if os.path.exists(LOG_FILE):
+        with open(LOG_FILE, "r") as file:
+            for _ in file:
+                count += 1
+
+    with open(SUMMARY_FILE, "w") as file:
+        file.write(f"Total activities: {count}")
+
+    print("Summary created")
 
 
 def menu():
@@ -77,8 +91,25 @@ def menu():
 
 
 def main():
+    backup_log()
+
     while True:
-        choice = input("Enter your choice: ")
+        menu()
+        choice = input("Choose option: ")
 
-        if choice ==1:
+        if choice == "1":
+            register_user()
+        elif choice == "2":
+            log_activity()
+        elif choice == "3":
+            view_logs()
+        elif choice == "4":
+            generate_summary()
+        elif choice == "5":
+            print("Goodbye")
+            break
+        else:
+            print("Invalid option")
 
+
+main()
